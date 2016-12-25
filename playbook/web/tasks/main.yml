@@ -1,0 +1,26 @@
+---
+# tasks file for web
+
+- block:
+  - name: update all packages
+    apt:
+      upgrade: yes
+      update_cache: yes
+  - name: install nginx
+    apt:
+      name: nginx
+      update_cache: no
+  - name: copy contents
+    copy:
+      src: "{{ item }}"
+      dest: "/usr/share/nginx/html/{{ item }}"
+    with_items:
+      - index.html
+      - josug2016.png
+  - name: restart nginx
+    service:
+      name: nginx
+      state: restarted
+  become: yes
+  become_user: root 
+
